@@ -11,8 +11,17 @@
 
 
 import sys
+
 from math import sqrt as sqrt # use only root, and nothing else
-from math import pi as refpi  # as reference
+
+# As reference, from Wikipedia.
+# math.pi gives same value up to 15 digits if standard float arithmetic is used
+refpi = 3.141592653589793238462643383279502884197169399375105820974944592307816
+
+# Same as math.sqrt(3) up to float precision
+sqrt3 = 1.73205080756887729352744634150587236694280525381038062805580
+
+p = "15" # 64-bit IEEE-754 decimal precision, as string for easy concatenation
 
 lbound = 0
 ubound = sys.maxint # could also be 4
@@ -20,8 +29,9 @@ ubound = sys.maxint # could also be 4
 radius = 1
 
 def _print_pi(i, n, l, u, pi):
-    print ("{i:2d}: n={n:9d}, {l:.25f} < pi < {u:.25f}, pi={pi:.50f} (e={e}%)".format(
-        i=i, n=n, l=l, u=u, pi=pi, e=abs(1-pi/refpi)*100))
+    print (("{i:2d}: n={n:11,d} :"
+            " {l:."+p+"f} < pi < {u:."+p+"f}, pi={pi:."+p+"f}"
+            " (e={e:."+p+"%})").format(i=i, n=n, l=l, u=u, pi=pi, e=1-(pi/refpi)))
 
 def ArchimedesPi():
 
@@ -30,15 +40,15 @@ def ArchimedesPi():
         iedge = iBC
         cedge = 2 * cAC
 
-        iperim = n * iedge
-        cperim = n * cedge
+        iperim = n * iedge / 2
+        cperim = n * cedge / 2
 
-        pi = (iperim/2 + cperim/2) / 2
+        pi = (iperim + cperim) / 2
 
-        _print_pi(i,n, iperim/2, cperim/2, pi)
+        _print_pi(i,n, iperim, cperim, pi)
 
-        # was result the same?
-        if pi == oldpi:
+        # was result the same within p significant digits?
+        if ("{0:."+p+"f}").format(pi) == ("{0:."+p+"f}").format(oldpi):
             return pi
 
         # next inscribed edge (BD, the new BC)
@@ -63,7 +73,6 @@ def ArchimedesPi():
 
         return _pi(n*2, iBC, iAB, iAC, cOC, cAC, cOA, pi, i+1)
 
-
     # start with an hexagon
     n = 6
 
@@ -87,5 +96,5 @@ def ArchimedesPi():
     return _pi(n, iBC, iAB, iAC, cOC, cAC, cOA)
 
 
-print("pi = {pi:.50f}".format(pi=ArchimedesPi()))
-print("pi = {pi:.50f}".format(pi=refpi))
+print(("pi = {0:."+p+"f} (calculated)").format(ArchimedesPi()))
+print(("pi = {0:."+p+"f} (reference)").format(refpi))
