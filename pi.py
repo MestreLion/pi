@@ -35,7 +35,7 @@ def _print_pi(i, n, l, u, pi):
 
 def ArchimedesPi():
 
-    def _pi(n, iBC, iAB, iAC, cOC, cAC, cOA, oldpi=lbound, i=0):
+    def _pi(n, iBC, iAC, cOC, cAC, oldpi=lbound, i=0):
 
         iedge = iBC
         cedge = 2 * cAC
@@ -55,23 +55,17 @@ def ArchimedesPi():
         # (AB + AC) / BC = AD / DB
         # AD^2 + DB^2 = AB^2, ADB is a right triangle
         # solving for BD == edge == new iBC
-        iBC = iBC * iAB / sqrt(iBC**2 + (iAB+iAC)**2)
-
-        # other values
-        iAB = iAB # never changes
-        iAC = sqrt(iAB**2 - iBC**2) # from right triangle formulae
+        iBC = iBC * 2*radius / sqrt(iBC**2 + (2*radius + iAC)**2)
+        iAC = sqrt((2*radius)**2 - iBC**2) # from right triangle formulae
 
         # next circumscribed edge (2*AD, the new AC)
         # (CO + OA) / CA = OA / AD
         # OA^2 + AD^2 = DO^2
-        # solving for AD == edge/2
-        cAC = cOA * cAC / (cOC + cOA)
+        # solving for AD == edge/2 == new cAC
+        cAC = radius * cAC / (cOC + radius)
+        cOC = sqrt(cAC**2 + radius**2)
 
-        # other values
-        cOA = cOA # never changes
-        cOC = sqrt(cAC**2 + cOA**2)
-
-        return _pi(n*2, iBC, iAB, iAC, cOC, cAC, cOA, pi, i+1)
+        return _pi(n*2, iBC, iAC, cOC, cAC, pi, i+1)
 
     # start with an hexagon
     n = 6
@@ -80,20 +74,18 @@ def ArchimedesPi():
     # A, B - opposite vertexes (polygon "diagonal": AB == diameter)
     # C - "next vertex" from B (BC == polygon edge)
     # OAC is a right triangle, hip=2*AC, OC=R
+    iAC = radius * sqrt(3) # Archimedes used 1351/780 > sqrt(3) > 265/153
     iBC = radius # edge
-    iAB = iBC * 2
-    iAC = iBC * sqrt(3) # Archimedes used 1351/780 > sqrt(3) > 265/153
 
     # circumscribed
     # O - center
     # A - tangent point (polygon edge midpoint)
     # C - A's edge vertex (AC is half a side)
     # OAC is proportional to inscribed's ACB, so similar rules apply
-    cOA = radius
-    cAC = cOA / sqrt(3)
+    cAC = radius / sqrt(3)
     cOC = 2 * cAC # edge
 
-    return _pi(n, iBC, iAB, iAC, cOC, cAC, cOA)
+    return _pi(n, iBC, iAC, cOC, cAC)
 
 
 print(("pi = {0:."+p+"f} (calculated)").format(ArchimedesPi()))
