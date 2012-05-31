@@ -43,7 +43,7 @@ def ArchimedesPi():
         iperim = n * iedge / 2
         cperim = n * cedge / 2
 
-        pi = (iperim + cperim) / 2
+        pi = (iperim * 2 + cperim) / 3 # inscribed is twice as better
 
         _print_pi(i,n, iperim, cperim, pi)
 
