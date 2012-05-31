@@ -29,9 +29,16 @@ ubound = sys.maxint # could also be 4
 radius = 1
 
 def _print_pi(i, n, l, u, pi):
-    print (("{i:2d}: n={n:11,d} :"
-            " {l:."+p+"f} < pi < {u:."+p+"f}, pi={pi:."+p+"f}"
-            " (e={e:."+p+"%})").format(i=i, n=n, l=l, u=u, pi=pi, e=1-(pi/refpi)))
+    print (("{i:2d}: n={n:7,d} :"
+            " {l:."+p+"f} ({el:+.2e}%)"
+            " < pi <"
+            " {u:."+p+"f} ({eu:+.2e}%)"
+            " pi={pi:."+p+"f}"
+            " ({ep:+.2e}%)").format(i=i, n=n, l=l, u=u, pi=pi,
+                                 el=100*(( l/refpi)-1),
+                                 eu=100*(( u/refpi)-1),
+                                 ep=100*((pi/refpi)-1),
+                                ))
 
 def ArchimedesPi():
 
@@ -88,5 +95,4 @@ def ArchimedesPi():
     return _pi(n, iBC, iAC, cOC, cAC)
 
 
-print(("pi = {0:."+p+"f} (calculated)").format(ArchimedesPi()))
-print(("pi = {0:."+p+"f} (reference)").format(refpi))
+print(("pi = {0:."+p+"f}").format(ArchimedesPi()))
