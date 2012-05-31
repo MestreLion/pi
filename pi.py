@@ -12,10 +12,10 @@
 import sys
 
 #from math import sqrt # use only root, and nothing else
-from decimal import Decimal as D, getcontext
+from decimal import Decimal as D, Context, getcontext
 
 #precision = 15 # 64-bit IEEE-754 float decimal precision practical limit
-precision  = 64 # Decimal module allows arbitrary precision (default = 28)
+precision  = 100 # Decimal module allows arbitrary precision (default = 28)
 getcontext().prec = precision + 2 # some room for rounding cumulative errors
 
 # Precision as string to allow easy concatenations on format()'s width
@@ -23,16 +23,21 @@ p = str(precision)
 
 # As reference, from Wikipedia.
 # math.pi is correct only up to 15 digits, due to standard float arithmetic
-pistr = '3.1415926535897932384626433832795028841971693993751058209749445923'
+pistr = '3.141592653589793238462643383279502884197169399375105820974944592307'\
+'8164062862089986280348253421170679'
+
 #piref = math.pi
 piref = D(pistr)
 
-# Archimedes used 1351/780 > sqrt(3) > 265/153
-# math.sqrt(3) not used for same reasons as pi
-#sqrt3 = sqrt(3)
-#sqrt3 = D('1.73205080756887729352744634150587236694280525381038062805580')
-sqrt3 = D(3).sqrt()
-
+"""Square root of 3
+Perhaps the most important constant to calculate pi - http://oeis.org/A002194
+Archimedes used 1351/780 > sqrt(3) > 265/153
+Other options are:
+math.sqrt(3) # not used for same reasons as pi
+D('1.7320508075688772935274463415058723669428052538103806280558069794519330169'
+'088000370811461867572485756756261414154')
+"""
+sqrt3 = D(3).sqrt(Context(prec=getcontext().prec+1)) # additional room
 
 lbound = 0
 ubound = sys.maxint # could also be 4
