@@ -12,11 +12,11 @@
 import sys
 
 #from math import sqrt # use only root, and nothing else
-from decimal import Decimal as D, Context, getcontext
+from decimal import Decimal as D, Context as C, getcontext, localcontext
 
 #precision = 15 # 64-bit IEEE-754 float decimal precision practical limit
 precision  = 100 # Decimal module allows arbitrary precision (default = 28)
-getcontext().prec = precision + 2 # some room for rounding cumulative errors
+getcontext().prec = precision + 3 # some room for rounding cumulative errors
 
 # Precision as string to allow easy concatenations on format()'s width
 p = str(precision)
@@ -195,15 +195,17 @@ def ArchimedesPi():
         _print_pi(i,n, iperim, cperim, pi)
 
         # was result the same within p significant digits?
-        if pi == oldpi:
-            return pi
+        with localcontext() as ctx:
+            ctx.prec = precision
+            if +pi == +oldpi:
+                return pi
 
         # next inscribed edge (BD, the new BC)
         # (AB + AC) / BC = AD / DB
         # AD^2 + DB^2 = AB^2, ADB is a right triangle
         # solving for BD == edge == new iBC
         iBC = iBC * 2*radius / (iBC**2 + (2*radius + iAC)**2).sqrt()
-        iAC = ((2*radius)**2 - iBC**2).sqrt() # from right triangle formulae
+        iAC = ((2*radius)**2 - iBC**2).sqrt() # from right triangle
 
         # next circumscribed edge (2*AD, the new AC)
         # (CO + OA) / CA = OA / AD
