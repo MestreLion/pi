@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # Calculating PI up to system's float precision
 # Using several algorithms
 
