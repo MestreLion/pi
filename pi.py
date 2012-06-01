@@ -169,12 +169,12 @@ sqrt3 = D(3).sqrt(C(prec=getcontext().prec + 2)) # extra precision for constant
 radius = D(1)
 
 def _print_pi(i, n, l, u, pi):
-    print (("{i:2d}: n={n:"+str(int(precision/2.7)+1)+",d} :" # empyrical
+    print (("{i:2d}: n={n:"+str(int(precision/2.8)+2)+",d} :" # empyrical
             " {l:."+p+"f} ({el:+.2e}%)"
             " < pi <"
             " {u:."+p+"f} ({eu:+.2e}%)"
             " pi={pi:."+p+"f}"
-            " ({ep:+.2e}%)").format(i=i, n=n, l=l, u=u, pi=pi,
+            " ({ep:+.3e}%)").format(i=i, n=n, l=l, u=u, pi=pi,
                                  el=100*(( l/piref)-1),
                                  eu=100*(( u/piref)-1),
                                  ep=100*((pi/piref)-1),
@@ -182,7 +182,7 @@ def _print_pi(i, n, l, u, pi):
 
 def ArchimedesPi():
 
-    def _pi(n, iBC, iAC, cOC, cAC, oldpi=lbound, i=0):
+    def _pi(n, iBC, iAC, cOC, cAC, oldpi=0, i=0):
 
         iedge = iBC
         cedge = 2 * cAC
@@ -234,7 +234,7 @@ def ArchimedesPi():
 
     return _pi(n, iBC, iAC, cOC, cAC)
 
-
+print("Archimedes")
 print(("pi = {0:."+p+"f} (calculated)").format(ArchimedesPi()))
 print(("pi = {0:."+p+"f} (reference)").format(piref))
 print(("pi = {0} (string)").format(pistr[:precision+2]))
