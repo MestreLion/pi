@@ -240,3 +240,46 @@ print("Archimedes")
 print(("pi = {0:."+p+"f} (calculated)").format(ArchimedesPi()))
 print(("pi = {0:."+p+"f} (reference)").format(piref))
 print(("pi = {0} (string)").format(pistr[:precision+2]))
+
+
+def LiuHuiPi():
+    def _pi(n, M, AN, oldpi=0, i=0):
+
+        # Area of 2N-polygon = radius * N-polygon semiperimeter
+        A2N = radius * M * n # r * (2*M) * (n/2)
+
+        lbound = A2N / radius**2
+        ubound = (2 * A2N - AN) / radius**2 # A2N + (A2N - AN)
+
+        pi = (lbound * 2 + ubound) / 3
+
+        _print_pi(i,n, lbound, ubound, pi)
+
+        with localcontext() as ctx:
+            ctx.prec = precision
+            if +pi == +oldpi:
+                return pi
+
+        # next polygon edge
+        # G == apothem, M == edge/2, j == r - G
+        # solving for m = next edge = new 2M, using right triangles GrM and jmM
+        # http://en.wikipedia.org/wiki/File:Liuhui_geyuanshu.svg
+        with localcontext() as ctx:
+            ctx.prec = getcontext().prec * 2 # boost precision for sqrt
+            m = (2 * radius * (radius - (radius**2 - M**2).sqrt())).sqrt()
+
+        return _pi(n*2, m/2, A2N, pi, i+1)
+
+
+    # start with an hexagon
+    n = 6
+    A = 3 * radius**2 * sqrt3 / 2
+    m = radius
+
+    return _pi(n, m/2, A)
+
+print('')
+print("Liu Hui")
+print(("pi = {0:."+p+"f} (calculated)").format(LiuHuiPi()))
+print(("pi = {0:."+p+"f} (reference)").format(piref))
+print(("pi = {0} (string)").format(pistr[:precision+2]))
