@@ -17,7 +17,7 @@ import sys
 from decimal import Decimal as D, Context as C, getcontext, localcontext
 
 #precision = 15 # 64-bit IEEE-754 float decimal precision practical limit
-precision  = 100 # Decimal module allows arbitrary precision (default = 28)
+precision  = 200 # Decimal module allows arbitrary precision (default = 28)
 getcontext().prec = precision + 3 # some room for rounding cumulative errors
 
 # Precision as string to allow easy concatenations on format()'s width
@@ -170,7 +170,7 @@ sqrt3 = D(3).sqrt(C(prec=getcontext().prec + 2)) # extra precision for constant
 
 radius = D(1)
 
-def _print_pi(i, n, l, u, pi):
+def _print_pi_inequal(i, n, l, u, pi):
     print (("{i:2d}: n={n:"+str(int(precision/2.8)+2)+",d} :" # empyrical
             " {l:."+p+"f} ({el:+.2e}%)"
             " < pi <"
@@ -194,7 +194,7 @@ def ArchimedesPi():
 
         pi = (iperim * 2 + cperim) / 3 # inscribed is twice as better
 
-        _print_pi(i,n, iperim, cperim, pi)
+        _print_pi_inequal(i,n, iperim, cperim, pi)
 
         # was result the same within p significant digits?
         with localcontext() as ctx:
@@ -255,7 +255,7 @@ def LiuHuiPi():
 
         pi = (lbound * 2 + ubound) / 3
 
-        _print_pi(i,n, lbound, ubound, pi)
+        _print_pi_inequal(i,n, lbound, ubound, pi)
 
         with localcontext() as ctx:
             ctx.prec = precision
@@ -285,3 +285,13 @@ def LiuHuiPi():
 #print(("pi = {0:."+p+"f} (calculated)").format(LiuHuiPi()))
 #print(("pi = {0:."+p+"f} (reference)").format(piref))
 #print(("pi = {0} (string)").format(pistr[:precision+2]))
+
+
+def _print_pi(i, pi):
+    print (("{i}: pi {p}  {pi:."+p+"f}").format(i=i, pi=pi, p=precision))
+
+precision  = 10 # Decimal module allows arbitrary precision (default = 28)
+getcontext().prec = precision + 3 # some room for rounding cumulative errors
+
+# Precision as string to allow easy concatenations on format()'s width
+p = str(precision)
