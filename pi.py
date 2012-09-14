@@ -238,10 +238,10 @@ def ArchimedesPi():
 
     return _pi(n, iBC, iAC, cOC, cAC)
 
-print("Archimedes")
-print(("pi = {0:."+p+"f} (calculated)").format(ArchimedesPi()))
-print(("pi = {0:."+p+"f} (reference)").format(piref))
-print(("pi = {0} (string)").format(pistr[:precision+2]))
+#print("Archimedes")
+#print(("pi = {0:."+p+"f} (calculated)").format(ArchimedesPi()))
+#print(("pi = {0:."+p+"f} (reference)").format(piref))
+#print(("pi = {0} (string)").format(pistr[:precision+2]))
 
 
 def LiuHuiPi():
@@ -280,8 +280,8 @@ def LiuHuiPi():
 
     return _pi(n, m/2, A)
 
-print('')
-print("Liu Hui")
-print(("pi = {0:."+p+"f} (calculated)").format(LiuHuiPi()))
-print(("pi = {0:."+p+"f} (reference)").format(piref))
-print(("pi = {0} (string)").format(pistr[:precision+2]))
+#print('')
+#print("Liu Hui")
+#print(("pi = {0:."+p+"f} (calculated)").format(LiuHuiPi()))
+#print(("pi = {0:."+p+"f} (reference)").format(piref))
+#print(("pi = {0} (string)").format(pistr[:precision+2]))
