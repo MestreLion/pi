@@ -295,3 +295,31 @@ getcontext().prec = precision + 3 # some room for rounding cumulative errors
 
 # Precision as string to allow easy concatenations on format()'s width
 p = str(precision)
+def LeibnizPi():
+    with localcontext() as ctx:
+        # Don't change precision! Leibniz is *painfully* slow.
+        # 500K iterations for precision 6 (4 correct digits)
+        ctx.prec = 5
+        ctx_double = C(prec=ctx.prec + 2)
+
+        pi = D(4)
+        denominator = 3
+        numerator = 4
+        oldpi = i = 0
+
+        while +pi != oldpi:
+            oldpi = pi
+            numerator = -numerator;
+            pi = pi + ctx_double.divide(numerator, denominator)
+            denominator = denominator + 2;
+            i+=1
+
+
+        print("")
+        print("Leibniz")
+        print (("{i}: pi {p}  {pi}").format(i=i,
+                                            pi=pi,
+                                            p=ctx.prec-1))
+        return pi
+
+LeibnizPi()
