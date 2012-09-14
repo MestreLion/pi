@@ -295,6 +295,38 @@ getcontext().prec = precision + 3 # some room for rounding cumulative errors
 
 # Precision as string to allow easy concatenations on format()'s width
 p = str(precision)
+
+def ArcsinePi():
+    from fractions import Fraction as F
+    pi = D(3) # initial seed
+    oldpi = na = den = i = 0
+    temp = pi
+    sum = 3
+    num = 1
+    da = 24
+    tf = F(temp)
+    while sum != oldpi:
+        oldpi = sum
+        num, na = num+na, na+8
+        den, da = den+da, da+32
+        delta = F(num, den)
+        oldtf = tf
+        tf = tf * delta
+        print("{oldtf} X {delta} = {tf}".format(oldtf=oldtf, delta=delta, tf=tf))
+        temp = (temp * num) / den
+        sum += temp
+        i+=1
+    _print_pi(i, sum)
+    return sum
+
+print("Arcsine")
+ArcsinePi()
+_print_pi('000', piref)
+print (("000: pi {p}  {pi}").format(pi=pistr[:precision+2], p=precision))
+
+
+
+
 def LeibnizPi():
     with localcontext() as ctx:
         # Don't change precision! Leibniz is *painfully* slow.
